@@ -1,5 +1,8 @@
 package com.webcrawler.services;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.webcrawler.TextSearchRepository;
 import com.webcrawler.dao.TextSearchDAO;
 import com.webcrawler.dto.ResponseDTO;
+import com.webcrawler.exception.WebCrowlerException;
 import com.webcrawler.model.TextSearch;
 import com.webcrawler.worker.CrawlerExecutor;
 
@@ -34,6 +38,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	@Transactional
 	public List<ResponseDTO> searchText(List<TextSearch> textSearchList) {
 		logger.info("Crawler service called with data :" + textSearchList);
+		validateUrls(textSearchList);
 
 		List<ResponseDTO> responseList = new ArrayList<>();
 		List<TextSearch> filteredList = textSearchList.stream().filter(t -> {
@@ -60,5 +65,15 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 		return responseList;
 
+	}
+
+	private void validateUrls(List<TextSearch> textSearchList) {
+		for (TextSearch textSearch : textSearchList) {
+			try {
+				new URL(textSearch.getUrl()).toURI();
+			} catch (MalformedURLException | URISyntaxException e) {
+				throw new WebCrowlerException("Error:"+e.getMessage());
+			}
+		}
 	}
 }

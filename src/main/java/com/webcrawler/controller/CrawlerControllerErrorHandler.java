@@ -12,7 +12,7 @@ public class CrawlerControllerErrorHandler {
 
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<CrawlerError> commonErrorHandler(Exception e) {
-		CrawlerError error = new CrawlerError("ACB001", "Web Crawler has encountered an error.");
+		CrawlerError error = new CrawlerError("ACB001", e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 

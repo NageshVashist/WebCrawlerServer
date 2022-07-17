@@ -37,6 +37,7 @@ public class RequestDTO {
 	}
 
 	public List<TextSearch> toTextSearch() {
+		
 
 		List<TextSearch> list = urls.stream().distinct().map(s -> new TextSearch(s, text))
 				.collect(Collectors.toList());
