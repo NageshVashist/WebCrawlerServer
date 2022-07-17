@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.webcrawler.exception.CrawlerError;
 
-//@RestControllerAdvice
+@RestControllerAdvice
 public class CrawlerControllerErrorHandler {
 
 	@ExceptionHandler(value = { Exception.class })
